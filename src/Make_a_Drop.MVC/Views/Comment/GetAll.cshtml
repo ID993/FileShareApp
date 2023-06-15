@@ -1,0 +1,72 @@
+﻿@model X.PagedList.IPagedList<Make_a_Drop.Application.Models.Comment.CommentResponseModel>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+@{
+    ViewBag.Title = "All Comments";
+}
+
+<h1>Comments</h1>
+<hr />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User
+            </th>
+            <th>
+                @Html.ActionLink("Date", "GetAll", new { sortOrder = ViewBag.DateSortParm })
+            </th>
+            <th>
+                Text
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedOn)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Text)
+                </td>
+                <td>
+                    @if (User.Identity?.Name == item.User.UserName)
+                    {
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a class="btn btn-primary" asp-action="Create" asp-route-id="@ViewBag.DropId">Post a comment</a>
+<br />
+
+<a href="/Comment/GetAll/@ViewBag.DropId?page=1&sortOrder=@ViewBag.CurrentSort">First</a> |
+
+@if (Model.PageNumber > 1)
+{
+    <a href="/Comment/GetAll/@ViewBag.DropId?page=@(Model.PageNumber - 1)&sortOrder=@ViewBag.CurrentSort">Previous</a>
+} |
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount |
+
+@if (Model.PageNumber < Model.PageCount)
+{
+<a href="/Comment/GetAll/@ViewBag.DropId?page=@(Model.PageNumber + 1)&sortOrder=@ViewBag.CurrentSort">Next</a>
+} |
+<a href="/Comment/GetAll/@ViewBag.DropId?page=@(Model.PageCount)&sortOrder=@ViewBag.CurrentSort">Last</a> |
+
+
+
+

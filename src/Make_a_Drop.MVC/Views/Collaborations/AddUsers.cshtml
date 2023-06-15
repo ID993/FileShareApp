@@ -1,0 +1,26 @@
+﻿@model CollaborationAddUsersModel
+
+@{
+    ViewData["Title"] = "Add users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-center">
+    <div class="row align-items-center justify-content-center w-100">
+        <div class="col-md-4">
+            <section class="text-center">
+                <h2>Add users</h2>
+
+                <form asp-controller="Collaborations" asp-action="AddUsers">
+                    <input type="hidden" asp-for="CollaborationId" name="CollaborationId" />
+                    <div class="form-floating">
+                        <input asp-for="Users" class="form-control" aria-required="true" />
+                        <label asp-for="Users"></label>
+                        <span asp-validation-for="Users" class="text-danger"></span>
+                    </div>
+                    <input type="submit" value="Add" class="btn btn-danger" />
+                </form>
+            </section>
+        </div>
+    </div>
+</div>

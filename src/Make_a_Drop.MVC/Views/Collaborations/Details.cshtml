@@ -1,0 +1,136 @@
+﻿@model Make_a_Drop.MVC.Models.DoubleModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Collaboration.Name)</h4>
+    <hr />
+    <div class="section-button-wrapper">
+        <div id="drops-btn" class="section-button active">Drops</div>
+        <div id="users-btn" class="section-button">Users</div>
+    </div>
+    
+    <div id="drops">
+        <h1>Drops</h1>
+        <a class="btn btn-primary" asp-controller="Collaborations" asp-action="Drop" asp-route-id="@Model.Collaboration?.Id">Make a drop</a>
+        
+        @using (Html.BeginForm("Details", "Collaborations", new { id = Model.Collaboration?.Id }, FormMethod.Get))
+        {
+            <p>
+                Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+                <input type="submit" value="Search" />
+            </p>
+        }
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.ActionLink("Name", "Details", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Size", "Details", new { sortOrder = ViewBag.SizeSortParm, currentFilter=ViewBag.CurrentFilter })
+                    </th>
+                    <th>Expiration Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var drop in Model.Drops)
+                {
+                    <tr>
+                        <td>@drop.Name</td>
+                        <td>@drop.Size B</td>
+                        <td>@drop.ExpirationDate</td>
+                       
+                        <td>
+                            <a class="btn btn-outline-primary" asp-controller="Drops" asp-action="Details" asp-route-id="@drop.Id">Details</a> |
+                            @if (User.Identity?.Name == drop.User.UserName)
+                            {
+                                <a class="btn btn-primary" asp-controller="Drops" asp-action="Edit" asp-route-id="@drop.Id">Edit</a>;
+                                <a class="btn btn-danger" asp-controller="Drops" asp-action="Delete" asp-route-id="@drop.Id">Delete</a>
+                            }
+                            <a class="btn btn-success" asp-controller="Comment" asp-action="GetAll" asp-route-id="@drop.Id">Discussion</a>
+                        </td>
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <a href="/Collaborations/Details/@Model.Collaboration?.Id?page=1&sortOrder=@ViewBag.CurrentSort">First</a> |
+
+    @if (Model.Drops.PageNumber > 1)
+    {
+        <a href="/Collaborations/Details/@Model.Collaboration?.Id?page=@(Model.Drops.PageNumber - 1)&sortOrder=@ViewBag.CurrentSort">Previous</a>
+    } |
+
+    Page @(Model.Drops.PageCount < Model.Drops.PageNumber ? 0 : Model.Drops.PageNumber) of @Model.Drops.PageCount |
+
+    @if (Model.Drops.PageNumber < Model.Drops.PageCount)
+    {
+        <a href="/Collaborations/Details/@Model.Collaboration?.Id?page=@(Model.Drops.PageNumber + 1)&sortOrder=@ViewBag.CurrentSort">Next</a>
+    } |
+    <a href="/Collaborations/Details/@Model.Collaboration?.Id?page=@(Model.Drops.PageCount)&sortOrder=@ViewBag.CurrentSort">Last</a> 
+
+    <div id="users" style="display: none;">
+        <h1>Users</h1>
+        <a class="btn btn-primary" asp-controller="Collaborations" asp-action="AddUsers" asp-route-id="@Model.Collaboration?.Id">Add a user</a>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model.Collaboration.Users)
+                {
+                    <tr>
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        @if (User.Identity?.Name == Model.Collaboration.Owner.UserName)
+                        {
+                            <td>
+                                <form asp-controller="Collaborations" asp-action="RemoveUser">
+                                    <input type="hidden" asp-for="@Model.Collaboration.Id" name="collaborationId" />
+                                    <input type="hidden" asp-for="@user.Id" name="userId" />
+                                    <input type="submit" value="Remove" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        }
+                        
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+    document.getElementById('drops-btn').onclick = function () {
+        document.getElementById("drops-btn").classList.add("active");
+        document.getElementById("drops").style.display = "block";
+
+        document.getElementById("users-btn").classList.remove("active");
+        document.getElementById("users").style.display = "none";
+    }
+
+    document.getElementById('users-btn').onclick = function () {
+        document.getElementById("users-btn").classList.add("active");
+        document.getElementById("users").style.display = "block";
+
+        document.getElementById("drops-btn").classList.remove("active");
+        document.getElementById("drops").style.display = "none";
+    }
+</script>

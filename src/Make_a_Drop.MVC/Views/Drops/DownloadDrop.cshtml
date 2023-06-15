@@ -1,0 +1,68 @@
+﻿@model Make_a_Drop.Application.Models.Drop.DownloadModel
+
+@{
+    ViewData["Title"] = "Download";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-center">
+    <p class="text-danger text-center">@ViewBag.Message</p>
+    <div class="row align-items-center justify-content-center w-100">
+        <div class="col-md-4"> 
+            <section class="text-center">
+                <h2>Find a Drop</h2>
+
+                <form asp-action="DownloadDrop" method="post" enctype="multipart/form-data">
+                    <div class="form-floating">
+                        <input asp-for="Name" class="form-control" autocomplete="name" aria-required="true" />
+                        <label asp-for="Name"></label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="form-floating">
+                        <input asp-for="SecretKey" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="SecretKey"></label>
+                        <span asp-validation-for="SecretKey" class="text-danger"></span>
+                    </div>
+                    <br>
+
+                    <button id="downloadLink" type="submit" class="btn btn-primary">Download</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="downloadModal" tabindex="-1" role="dialog" aria-labelledby="downloadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="downloadModalLabel">Download Status</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="downloadStatus"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('downloadLink').addEventListener('click', function () {
+        setTimeout(function () {
+            var downloadStatusElement = document.getElementById('downloadStatus');
+            downloadStatusElement.innerText = 'File downloaded successfully! If You are not registered the Drop is deleted!';
+
+            $('#downloadModal').modal('show');
+        }, 2000);
+    });
+    document.getElementById('downloadModal').addEventListener('click', function () {
+        $('#downloadModal').modal('hide');
+    });
+</script>
+

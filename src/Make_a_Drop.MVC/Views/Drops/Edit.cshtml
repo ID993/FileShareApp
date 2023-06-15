@@ -1,0 +1,70 @@
+﻿@model Make_a_Drop.Application.Models.Drop.DropResponseModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Drop</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Size)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Size) B
+    </dd>
+</dl>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Files in drop</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var file in ViewBag.Files)
+        {
+            <tr>
+                <td>@file.FileName</td>
+                <td>@file.Size B</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="ExpirationDate" class="control-label"></label>
+                <input asp-for="ExpirationDate" class="form-control" type="date"/>
+                <span asp-validation-for="ExpirationDate" class="text-danger"></span>
+            </div>
+            <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<div>
+    <a class="btn btn-outline-dark" href="javascript:history.go(-1)">Back</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+

@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="container-center">
+    <div class="text-center">
+        <h1 class="display-4">Make a Drop</h1>
+        <p>
+            Quickly share files between devices
+        </p>
+        <div>
+            <a class="btn btn-primary" asp-controller="Drops" asp-action="Upload">Create</a>
+            <a class="btn btn-primary" asp-controller="Drops" asp-action="DownloadDrop">Find</a>
+        </div>
+    </div>
+</div>
+

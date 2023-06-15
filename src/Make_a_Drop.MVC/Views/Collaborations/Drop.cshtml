@@ -1,0 +1,45 @@
+﻿@using Make_a_Drop.Application.Models.Drop
+@model UploadModel
+
+@{
+    ViewData["Title"] = "Upload";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-center">
+    <p class="text-danger text-center">@ViewBag.Message</p>
+    <div class="row align-items-center justify-content-center w-100">
+        <div class="col-md-4">
+            <section class="text-center">
+                <h2>Make a drop</h2>
+
+                <form asp-action="Drop" method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating">
+                        <input asp-for="Name" class="form-control" autocomplete="name" aria-required="true" />
+                        <label asp-for="Name"></label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="form-floating">
+                        <input asp-for="SecretKey" class="form-control" autocomplete="new-password" aria-required="true" />
+                        <label asp-for="SecretKey"></label>
+                        <span asp-validation-for="SecretKey" class="text-danger"></span>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        <label asp-for="File"></label>
+                        <input asp-for="File" type="file" class="form-control-file" aria-required="true" multiple><br />
+                        <span asp-validation-for="File" class="text-danger"></span>
+                    </div>
+                    <input type="text" name="CollaborationId" value="@ViewBag.CollaborationId" hidden />
+                    <br>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </section>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>Make_a_Drop.Application</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="10.1.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+        <PackageReference Include="Firebase.Auth" Version="1.0.0" />
+        <PackageReference Include="FirebaseAdmin" Version="2.3.0" />
+        <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+        <PackageReference Include="FluentValidation.AspNetCore" Version="10.3.4" />
+        <PackageReference Include="Google.Cloud.Storage.V1" Version="4.5.0" />
+        <PackageReference Include="MailKit" Version="2.15.0" />
+        <PackageReference Include="MimeKit" Version="2.15.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="PagedList" Version="1.17.0" />
+        <PackageReference Include="PagedList.Mvc" Version="4.5.0" />
+        <PackageReference Include="X.PagedList" Version="9.0.0-prerelease" />
+        <PackageReference Include="X.PagedList.Mvc" Version="8.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Make_a_Drop.DataAccess\Make_a_Drop.DataAccess.csproj" />
+    </ItemGroup>
+</Project>

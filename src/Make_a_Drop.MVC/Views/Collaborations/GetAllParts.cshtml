@@ -1,0 +1,77 @@
+﻿@model X.PagedList.IPagedList<Make_a_Drop.Application.Models.Collaboration.CollaborationModel>
+@using X.PagedList.Mvc;
+@using X.PagedList;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Part of Collabs";
+}
+
+<h1>Part of collabs</h1>
+<hr />
+
+<p>
+    <a class="btn btn-dark" asp-action="Create">Create New</a> |
+    <a class="btn btn-outline-dark" asp-action="DownloadDrop">Find Drop</a>
+</p>
+
+@using (Html.BeginForm("GetAllParts", "Collaborations", FormMethod.Get))
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Search" />
+    </p>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.ActionLink("Name", "GetAllParts", new { sortOrder = ViewBag.NameSortParm, currentFilter=ViewBag.CurrentFilter })
+            </th>
+            <th>Owner</th>
+            <th>Action</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner.UserName)
+                </td>
+
+                <td>
+                    <a class="btn btn-outline-primary" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (User.Identity?.Name == item.Owner.UserName)
+                    {
+                        <a class="btn btn-outline-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+@Html.ActionLink("First", "GetAllParts", new { page = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter }) |
+
+@if (Model.PageNumber > 1)
+{
+    @Html.ActionLink("Previous", "GetAllParts", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter })
+} |
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount |
+
+@if (Model.PageNumber < Model.PageCount)
+{
+    @Html.ActionLink("Next", "GetAllParts", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter })
+} |
+@Html.ActionLink("Last", "GetAllParts", new { page =  Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter })
+
+
+
+
